@@ -1,4 +1,4 @@
-cd /usr/src/app/django/mcsap
+cd /usr/src/app/django/webapps
 
 ./manage.py collectstatic --noinput
 ./manage.py makemigrations
