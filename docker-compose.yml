@@ -6,14 +6,14 @@ services:
     build:
       context: mysql
     volumes:
-      - covid-mysql-db:/var/lib/mysql
+      - webapps-mysql-db:/var/lib/mysql
       - ./project-data:/usr/src/app/
 
     environment:
       MYSQL_ROOT_PASSWORD: mariadb
 
     networks:
-      covid_net:
+      webapps_net:
         ipv4_address: 172.28.1.2
 
 #-------------------------------------
@@ -29,7 +29,7 @@ services:
       - django
 
     networks:
-      mango_net:
+      webapps_net:
         ipv4_address: 172.28.1.6
 #-------------------------------------
   django:
@@ -52,18 +52,18 @@ services:
       - mysql
       
     networks:
-      covid_net:
+      webapps_net:
         ipv4_address: 172.28.1.4
 
 #-------------------------------------
 
 
 networks:
-  covid_net:
+  webapps_net:
     ipam:
       driver: default
       config:
         - subnet: 172.28.0.0/16
 volumes:
-  covid-mysql-db: 
+  webapps-mysql-db: 
     external : yes    
