@@ -1,6 +1,6 @@
 FROM python:3.7.1-alpine3.8
 
-[21~WORKDIR /usr/src/app/django
+WORKDIR /usr/src/app/django
 COPY  requirements.txt /usr/src/app/django
 
 RUN apk update  && \
