@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="/static/js/jquery-3.3.1.min.js" ></script>
+
+<!-- Latest compiled and minified CSS -->
+
+    <link rel="stylesheet" href="/static/bootstrap-4.2.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/webapps.css">
+ 
+    <title>Saipantech Webapps</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body style="background-color:white">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+       <img src="/static/img/SaipanTechLogo.png" height="50px">    
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        
+        <div class="navbar-nav mr-auto">
+           
+
+            <a class="nav-item nav-link ml-4" href="{% url 'dashboard' %}">Covid 19 Status Board</a>
+            
+
+            {% if request.user.is_authenticated %}
+            <a class="nav-item nav-link ml-4" href="#">Change Password</a>
+            {% endif %}
+        </div>
+        
+        <span class="navbar-text">                    
+          <span >{{ user.username }}</span>
+          <span ><a class="p1" href="#"><h6>Logout</h6></a></span>
+        </span>
+    </div>
+  </nav>  
+<div class="fluid-container" >
+  {% block body_main   %}
+  {% endblock %}
+
+</div>
+
+  <script src="/static/bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
+ 
+
+  </body>
+</html>

@@ -1,0 +1,87 @@
+{% extends "./base2.html" %}
+
+{% load humanize %}
+
+{% block jquery %}
+
+	{% include "./dashboard.js" %}
+
+
+{% endblock %}
+
+{% block body_main %}
+
+<style>
+td,th {
+	font-family:Copper;
+	font-size:12pt;
+	text-align:right;
+}
+.cname {
+	border:none;
+	background-color:inherit;
+	cursor:pointer;
+	color:navy;
+	font-size:18pt;
+
+}
+.detail {
+	font-family:verdana;
+	font-size:8pt;
+}
+
+</style>
+
+<form method="POST">
+{% csrf_token %}	
+<div class="container">
+
+	<div class="menubox" style="height:400px; overflow:scroll">
+	<h3 style="text-align:center">
+		Current Covid-19 Statistics</h3>
+		<table class="table">
+			<tr>
+				<th style="text-align:left">Country (click for detail)</th>
+				<th>Active</th>
+				<th>Critical
+				<th>Recovered</th>
+				<th>Deaths</th>
+				<th>Totals</th>
+			</tr>
+		{% for c in  sorted %}
+			{% if c.country != "World" %}
+		
+			<tr>
+				<td style="text-align:left"><button class="cname" name="country_select" value="{{c.country}}">{{ c.country}}</button></td>
+				<td>{{ c.cases.active|intcomma }}</td>
+				<td>{{ c.cases.critical|intcomma  }}</td>
+				<td>{{ c.cases.recovered|intcomma  }}</td>
+				<td>{{ c.deaths.total|intcomma  }}</td>
+				<td>{{ c.cases.total|intcomma  }}</td>	
+			</tr>
+
+			{% endif %}
+		{% endfor %}
+		</table>
+	</div>
+	{% if highlight %}
+	<div class="menubox">
+
+		<div class="row">
+			<div class="col-sm-6" style="border-right:1px solid green">
+				<h5>Daily Statistics Death, Critical and Recovered</h5>
+				<canvas id="myChart" ></canvas>
+			</div>
+		
+			<div class="col-sm-6">
+				<h5>Daily Increase of Deaths</h5>
+				<canvas id="pie-chart" width="800" height="450"></canvas>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+</div>
+</form>
+
+{% endblock %}	
