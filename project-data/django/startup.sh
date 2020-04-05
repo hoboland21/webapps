@@ -1,10 +1,9 @@
-cd /usr/src/app/django/webapps
+cd /usr/src/app/django
 
 #/manage.py collectstatic --noinput
-./manage.py makemigrations
-./manage.py migrate
+webapps/manage.py makemigrations
+webapps/manage.py migrate
 
 #./manage.py runserver 0.0.0.0:8088
 
-cd /usr/src/app/django
 uwsgi --ini   uwsgi.ini 
