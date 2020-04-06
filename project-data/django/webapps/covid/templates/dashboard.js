@@ -13,17 +13,25 @@ function chart1(data) {
 	        {
 	            label: '# of Deaths',
 	            data: data.deaths,
-	            borderColor:"red"
+	            fill: true,
+	            pointRadius: 2,
+	            borderWidth: 0,
+	            backgroundColor: "#ff6600"
 	        },
 	        {
 	            label: '# of Critical',
 	            data: data.critical,
-	            borderColor:"Yellow"
+	            fill: true,
+	            pointRadius: 2,
+	            borderWidth: 0,
+	            backgroundColor: "#7c77b9"
 	        },
 	        {
 	            label: '# of Recovered',
 	            data: data.recovered,
-	            borderColor:"Green"
+	            pointRadius: 2,
+	            borderWidth: 0,
+	            backgroundColor: "#0bc9cd"
 	        }
 
 	        ]
@@ -32,6 +40,11 @@ function chart1(data) {
 			title: { 
 				display:true,
 				text:data.country
+            		},
+			scales: {
+				yAxes: [{
+					stacked: true
+				}]
 			}
 		}
 	})
@@ -47,7 +60,7 @@ function chart2(data) {
       labels: data.labels,
       datasets: [{
         label: "Daily Death Change",
-        backgroundColor: data.barcolor,
+        backgroundColor: "#8fbfe0",
         data: data.newdeaths
       }]
     },
