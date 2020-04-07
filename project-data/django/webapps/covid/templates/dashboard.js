@@ -1,4 +1,4 @@
-var endpoint= '/covid/api/{{country}}';
+var endpoint= '/covid/api/country/{{country}}';
 var defaultData = [];
 var labels = [];
 var ctx = document.getElementById('myChart').getContext('2d');

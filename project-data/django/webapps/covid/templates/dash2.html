@@ -1,0 +1,27 @@
+{% extends "./base2.html" %}
+
+{% load humanize %}
+
+{% block jquery %}
+
+	{% include "./dash2.js" %}
+
+
+{% endblock %}
+
+{% block body_main %}
+
+<style>
+
+</style>
+
+<form method="POST">
+{% csrf_token %}	
+<div class="container">
+
+{{ current}}
+}
+
+</div>
+</form>
+{% endblock %}	
