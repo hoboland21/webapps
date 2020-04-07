@@ -29,6 +29,7 @@ function chart1(data) {
 	        {
 	            label: '# of Recovered',
 	            data: data.recovered,
+	            fill: true,
 	            pointRadius: 2,
 	            borderWidth: 0,
 	            backgroundColor: "#0bc9cd"
@@ -74,16 +75,18 @@ function chart2(data) {
 }
 
 
-	$.ajax({
-		method: "GET",
-		url: endpoint,
-		success: function(data) {
-			console.log(data);
-			chart1(data);
-			chart2(data);
-		},
-  		error: function(error_data) {
-			console.log("error",error_data);
 
-		}
-	})
+
+$.ajax({
+	method: "GET",
+	url: endpoint,
+	success: function(data) {
+		console.log(data);
+		chart1(data);
+		chart2(data);
+	},
+		error: function(error_data) {
+		console.log("error",error_data);
+
+	}
+})
