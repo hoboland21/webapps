@@ -25,9 +25,20 @@ td,th {
 	font-size:18pt;
 
 }
+.cname2 {
+	border:none;
+	background-color:inherit;
+	cursor:pointer;
+	color:navy;
+	font-size:12pt;
+
+}
 .detail {
 	font-family:verdana;
 	font-size:8pt;
+}
+.marked_line {
+	background-color: navajowhite
 }
 
 </style>
@@ -50,21 +61,25 @@ td,th {
 			</tr>
 		{% for c in  sorted %}
 			{% if c.country != "World" %}
-		
+		{% if country == c.country %}
+			<tr class="marked_line">
+		{% else %}
 			<tr>
+
+		{% endif %}
 				<td style="text-align:left"><button class="cname" name="country_select" value="{{c.country}}">{{ c.country}}</button></td>
-				<td>{{ c.cases.active|intcomma }}</td>
-				<td>{{ c.cases.critical|intcomma  }}</td>
-				<td>{{ c.cases.recovered|intcomma  }}</td>
-				<td>{{ c.deaths.total|intcomma  }}</td>
-				<td>{{ c.cases.total|intcomma  }}</td>	
+				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.active|intcomma }}</button></td>
+				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.critical|intcomma  }}</button></td>
+				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.recovered|intcomma  }}</button></td>
+				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.deaths.total|intcomma  }}</button></td>
+				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.total|intcomma  }}</button></td>	
 			</tr>
 
 			{% endif %}
 		{% endfor %}
 		</table>
 	</div>
-	{% if highlight %}
+	{% if country %}
 	<div class="menubox">
 
 		<div class="row">

@@ -1,4 +1,4 @@
-var endpoint= '/covid/api/{{highlight}}';
+var endpoint= '/covid/api/{{country}}';
 var defaultData = [];
 var labels = [];
 var ctx = document.getElementById('myChart').getContext('2d');
@@ -73,9 +73,6 @@ function chart2(data) {
     }
 });
 }
-
-
-
 
 $.ajax({
 	method: "GET",

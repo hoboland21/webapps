@@ -12,19 +12,22 @@ def dashboard(request) :
 	result = {}
 
 	test = CA()
-#	result["countries"] = test.countries()
-	
+
+	if "country_select" in request.POST:
+		country = request.POST["country_select"]
+	else :
+		country = "All"
+	result["country"] = country
+
 	data = test.current()["response"]
 	
 	result["current"] = data
 	result["sorted"] = []
+
 	for x in sorted(data, key=lambda item: item["cases"]["total"],reverse=True):
 		result["sorted"].append(x)
 
-	if "country_select" in request.POST:
-		country = request.POST["country_select"]
-		result["highlight"] = country
-		result["hidata"] =test.history(country)
+
 	return  render(request,'dashboard.html',context=result)
 
 
@@ -37,13 +40,5 @@ class ChartData(APIView):
 
 		dataset.history(country)
 		data = dataset.to_chart()
-
-#		data = { 
-#			"all": dataset.data,
-#			"deaths": dataset.deaths,
-#			"critical":dataset.critical,
-#			"cases":dataset.cases,
-#			"labels":dataset.labels
-#			}
 
 		return Response(data)
