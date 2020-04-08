@@ -68,11 +68,13 @@ def dash2(request) :
 
 	result["state"] = state
 
+	if "all_state_select" in request.POST:
+		alldata = API.all_states()
 
 	data = API.state(state)
-	
+	result["STATES"] = STATES
 	result["current"] = data
-	result["sorted"] = []
+	result["chart"] = API.to_chart()
 
 	return  render(request,'dash2.html',context=result)
 

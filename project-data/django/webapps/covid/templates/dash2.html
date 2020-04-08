@@ -18,10 +18,14 @@
 <form method="POST">
 {% csrf_token %}	
 <div class="container">
+<div class="flex-con">
+{% for s in STATES  %}
+<div><button name="state_select" value="{{s}}">{{s}} </button></div>
+	
+{% endfor %}
+</div>
 
-{{ current}}
-}
-
+<canvas id="myChart" ></canvas>
 </div>
 </form>
 {% endblock %}	

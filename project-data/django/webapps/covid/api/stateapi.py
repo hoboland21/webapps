@@ -1,17 +1,36 @@
 import http.client
 import json
 from datetime import datetime as dt
+from datetime import date
 import urllib.request
+
+STATES= ["AK","AL","AR","AZ","CA","CO","CT","DC",
+"DE","FL","GA","HI","IA","ID","IL","IN",
+"KS","KY","LA","MA","MD","ME","MI","MN",
+"MO","MS","MT","NC","ND","NE","NH","NJ",
+"NM","NV","NY","OH","OK","OR","PA","PR",
+"RI","SC","SD","TN","TX","UT","VA","VT",
+"WA","WI","WV","WY"]
 
 
 class CovidStateApi(object) :
 	def __init__(self) :
 		pass
+	
 	def state(self,state) :
 		fp = urllib.request.urlopen("http://coronavirusapi.com/getTimeSeriesJson/{}".format(state))
-		data = json.loads(fp.read())
+		self.data = json.loads(fp.read())
 		fp.close()
-		return data
+		return self.to_chart()
+
+	def all_states(self) :
+		self.alldata = []
+		for s in STATES :
+			fp = urllib.request.urlopen("http://coronavirusapi.com/getTimeSeriesJson/{}".format(s))
+			data = json.loads(fp.read())
+			fp.close()
+			self.alldata.append(data)
+
 
 	def date_prep(self,datestr) :
 		d = dt.strptime(datestr[:-6],"%Y-%m-%dT%H:%M:%S")
@@ -23,7 +42,8 @@ class CovidStateApi(object) :
 
 		for d in self.data :
 #			t = self.date_prep(d["time"])
-			t = d["day"]
+			t_epoch = d["seconds_since_epoch"]
+			t = date.fromtimestamp(t_epoch).isoformat()
 			try:
 				data_clean[t].append(d)
 			except:
@@ -32,11 +52,18 @@ class CovidStateApi(object) :
 
 		return data_clean
 
+
+
 	def to_chart(self) :
 		cp = self.chart_prep()
-		result = {"all":[],"newdeaths":[],
-			"recovered":[],"deaths":[],
-			"critical":[],"labels":[], "barcolor":[]}
+		result = {"all":[],"labels":[],"tested":[],"positive":[],"deaths":[]}
 		for k in sorted(cp.keys()) :
-			pass
+			result["labels"].append(k)
+			result["tested"].append(cp[k][0]["tested"]) 
+			result["positive"].append(cp[k][0]["positive"]) 
+			d = cp[k][0]["deaths"]
+			if cp[k][0]["deaths"] == None :
+				d = 0
+			result["deaths"].append(d)
+
 		return result
