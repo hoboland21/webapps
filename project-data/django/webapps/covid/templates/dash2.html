@@ -12,20 +12,60 @@
 {% block body_main %}
 
 <style>
+				
+.stdbutt {
+	background-color:snow;
+	color:#101010;
+	width:100%;
+	cursor:pointer;
+	border-style:solid;
+	padding:5px;
+	font-family:Copper;
+	text-align:left;
+}
+.hlbutt {
+	background-color:navajowhite;
+	color:#101010;
+	opacity:.5;
+	width:100%;
+	cursor:pointer;
+	border-style:solid;
+	padding:5px;
+	font-family:Copper;
+	text-align:left 
 
+}
 </style>
 
 <form method="POST">
 {% csrf_token %}	
 <div class="container">
-<div class="flex-con">
-{% for s in STATES  %}
-<div><button name="state_select" value="{{s}}">{{s}} </button></div>
-	
-{% endfor %}
-</div>
+	<div class="menubox">
+		<h3 style="text-align:center">Covid 19 United States Information</h3>
+		<div class="flex-con">
+		{% for s in states %}
+			<div style="width:16%">
+				{% if s.0 == state %}
+					<button class="hlbutt" name="state_select" value="{{s.0}}">{{s.1}} </button>
+				{% else %}
+					<button class="stdbutt" name="state_select" value="{{s.0}}">{{s.1}} </button>
+				{% endif %}
+			</div>
+		{% endfor %}
+		</div>
+	</div>
+	<div class="menubox">
+		<div class="row">
+			<div style="border-right:1px solid green" class="col-md-6">
+				<canvas id="chart2" ></canvas>
 
-<canvas id="myChart" ></canvas>
+			</div>
+			<div class="col-md-6">
+				<canvas id="myChart" ></canvas>
+				
+			</div>
+		</div>
+	</div>
 </div>
 </form>
 {% endblock %}	

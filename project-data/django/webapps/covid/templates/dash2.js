@@ -41,24 +41,68 @@ function chart1(data) {
 		options : {
 			title: { 
 				display:true,
-				text:data.state
-            		}
-			// scales: {
-			// 	yAxes: [{
-			// 		stacked: true
-			// 	}]
-			//}
+				text:data.state_name
+            		},
+			 scales: {
+			 	yAxes: [{
+			 		stacked: true
+			 	}]
+			}
 		}
 	})
 
 
 }
+
+function chart2(data) {
+
+	new Chart(document.getElementById("chart2"), {
+    type: 'line',
+ 	    data: {
+	    	labels:data.labels,
+	        datasets: [
+
+	        {
+	            label: '# of Positive',
+	            data: data.positive,
+	            fill: true,
+	            pointRadius: 2,
+	            borderWidth: 0,
+	            backgroundColor: "#0bc9cd"
+	        },
+	        {
+	            label: '# of Tested',
+	            data: data.tested,
+	            fill: true,
+	            pointRadius: 2,
+	            borderWidth: 0,
+	            backgroundColor: "#7c77b9"
+	        }
+
+	        ]
+		},
+    options: {
+      title: {
+        display: true,
+        text: data.state_name
+      },
+  	 scales: {
+	 	yAxes: [{
+	 		stacked: true
+	 	}]
+    }
+	}
+});
+}
+
+
 $.ajax({
 	method: "GET",
 	url: endpoint,
 	success: function(data) {
 		console.log(data);
 		chart1(data);
+		chart2(data);
 		
 	},
 		error: function(error_data) {

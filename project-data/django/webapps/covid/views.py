@@ -5,23 +5,14 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .api.covidapi import CovidApi as CA
 from .api.stateapi import CovidStateApi as CAS
-
+from .api.stateapi import STATES, STATE_NAMES,STATE_NAME_DICT
 # Create your views here.
 
-
-STATES= ["AK","AL","AR","AZ","CA","CO","CT","DC",
-"DE","FL","GA","HI","IA","ID","IL","IN",
-"KS","KY","LA","MA","MD","ME","MI","MN",
-"MO","MS","MT","NC","ND","NE","NH","NJ",
-"NM","NV","NY","OH","OK","OR","PA","PR",
-"RI","SC","SD","TN","TX","UT","VA","VT",
-"WA","WI","WV","WY"]
 
 
 
 def dashboard(request) :
 	result = {}
-
 	test = CA()
 
 	if "country_select" in request.POST:
@@ -37,7 +28,6 @@ def dashboard(request) :
 
 	for x in sorted(data, key=lambda item: item["cases"]["total"],reverse=True):
 		result["sorted"].append(x)
-
 
 	return  render(request,'dashboard.html',context=result)
 
@@ -67,12 +57,13 @@ def dash2(request) :
 		state = "OR"
 
 	result["state"] = state
+	result["state_name"] = STATE_NAME_DICT[state]
 
 	if "all_state_select" in request.POST:
 		alldata = API.all_states()
 
 	data = API.state(state)
-	result["STATES"] = STATES
+	result["states"] = STATE_NAMES
 	result["current"] = data
 	result["chart"] = API.to_chart()
 
