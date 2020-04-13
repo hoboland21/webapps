@@ -5,7 +5,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .api.covidapi import CovidApi as CA
 from .api.stateapi import CovidStateApi as CAS
-from .api.stateapi import STATES, STATE_NAMES,STATE_NAME_DICT
+from .api.stateapi import STATE_NAME_DICT
+from .api.state import STATES, STATE_NAMES, state_links
 # Create your views here.
 
 
