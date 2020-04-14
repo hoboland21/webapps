@@ -2,13 +2,12 @@ import http.client
 import json
 from datetime import datetime as dt
 from datetime import date
+from covid.models  import States
 import urllib.request
-from .state import STATE_NAMES
 
-STATE_NAME_DICT = { item[0]:item[1] for item in STATE_NAMES }
 class CovidStateApi(object) :
 	def __init__(self) :
-		pass
+		self.states=States.objects.all().order_by("abbrev")
 	
 	def state(self,state) :
 		fp = urllib.request.urlopen("http://coronavirusapi.com/getTimeSeriesJson/{}".format(state))
@@ -16,14 +15,6 @@ class CovidStateApi(object) :
 		fp.close()
 		self.state = state
 		return self.to_chart()
-
-	def all_states(self) :
-		self.alldata = []
-		for s in STATES :
-			fp = urllib.request.urlopen("http://coronavirusapi.com/getTimeSeriesJson/{}".format(s))
-			data = json.loads(fp.read())
-			fp.close()
-			self.alldata.append(data)
 
 
 	def date_prep(self,datestr) :
@@ -35,7 +26,6 @@ class CovidStateApi(object) :
 		data_clean = {}
 
 		for d in self.data :
-#			t = self.date_prep(d["time"])
 			t_epoch = d["seconds_since_epoch"]
 			t = date.fromtimestamp(t_epoch).isoformat()
 			try:
@@ -61,6 +51,6 @@ class CovidStateApi(object) :
 				d = 0
 			result["deaths"].append(d)
 		result["state"]=self.state
-		result["state_name"]=STATE_NAME_DICT[self.state]
+		result["state_name"]=self.states.get(abbrev=self.state).name
 
 		return result

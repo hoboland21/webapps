@@ -16,23 +16,25 @@
 .stdbutt {
 	background-color:snow;
 	color:#101010;
-	width:100%;
+	width:80%;
 	cursor:pointer;
-	border-style:solid;
+	border-style:none;
 	padding:5px;
 	font-family:Copper;
 	text-align:left;
+	display:inline;
 }
 .hlbutt {
 	background-color:navajowhite;
 	color:#101010;
 	opacity:.5;
-	width:100%;
+	width:80%;
 	cursor:pointer;
-	border-style:solid;
+	border-style:none;
 	padding:5px;
 	font-family:Copper;
-	text-align:left 
+	text-align:left;
+	display:inline;
 
 }
 </style>
@@ -44,12 +46,13 @@
 		<h3 style="text-align:center">Covid 19 United States Information</h3>
 		<div class="flex-con">
 		{% for s in states %}
-			<div style="width:16%">
-				{% if s.0 == state %}
-					<button class="hlbutt" name="state_select" value="{{s.0}}">{{s.1}} </button>
+			<div style="width:16%;border:1px solid #ddd">
+				{% if s.abbrev == state %}
+					<button class="hlbutt" name="state_select" value="{{s.abbrev}}">{{s.name}} </button>
 				{% else %}
-					<button class="stdbutt" name="state_select" value="{{s.0}}">{{s.1}} </button>
+					<button class="stdbutt" name="state_select" value="{{s.abbrev}}">{{s.name}} </button>
 				{% endif %}
+				<a href="{{s.url}}" target="_new"><img style="width:10%" src="/static/img/info.png"></a>
 			</div>
 		{% endfor %}
 		</div>
