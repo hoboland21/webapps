@@ -1,3 +1,4 @@
+from covid.models import States
 
 STATES= [
 "AK","AL","AR","AZ","CA",
@@ -85,4 +86,17 @@ state_links =   [
         ("https://health.wyo.gov/publichealth/infectious-disease-epidemiology-unit/disease/novel-coronavirus/","WY"),
 	]
 
-  
+def initialize_state_db() :
+    States.objects.all().delete()
+    for s in STATES :
+        state = States.objects.create(abbrev=s )
+        state.save()
+    for s in STATE_NAMES :
+        smodel = States.objects.get(abbrev=s[0])
+        smodel.name = s[1]
+        smodel.save()
+    for s in state_links :
+        smodel = States.objects.get(abbrev=s[1])
+        smodel.url = s[0]
+        smodel.save()
+    
