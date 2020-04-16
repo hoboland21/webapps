@@ -5,17 +5,36 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .api.covidapi import CovidApi as CA
 from .api.stateapi import CovidStateApi as CAS
+from .api.population import PopulationApi as POP
+
 from covid.models import *
 
 
 # Create your views here.
 
-
-
+fix_dict = {
+	"USA":"United States",
+	"UK":"United Kingdom",
+	"S-Korea":"South Korea",
+	"Saudi-Arabia":"Saudi Arabia",
+	"Czechia" : "Czech Republic (Czechia)",
+	"UAE" : "United Arab Emirates",
+	"Dominican-Republic":"Dominican Republic",
+}
+def quick_check(country) :
+	cdata = Countries()
+	if country in fix_dict :
+		cdata = Countries.objects.get(name=fix_dict[country])
+	return cdata
 
 def dashboard(request) :
 	result = {}
 	test = CA()
+
+	if "load_country_db" in request.POST:
+		population =  POP()
+		population.loadDB()
+
 
 	if "country_select" in request.POST:
 		country = request.POST["country_select"]
@@ -29,9 +48,17 @@ def dashboard(request) :
 	result["sorted"] = []
 
 	for x in sorted(data, key=lambda item: item["cases"]["total"],reverse=True):
+		
+		try:
+			x["cdata"] = Countries.objects.get(name=x["country"])
+		except:
+			x["cdata"] = quick_check(x["country"])
+
 		result["sorted"].append(x)
 
 	return  render(request,'dashboard.html',context=result)
+
+
 
 
 class ChartData(APIView):

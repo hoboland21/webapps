@@ -45,6 +45,8 @@ td,th {
 </style>
 
 <form method="POST">
+
+<button name="load_country_db" value=1>Load Country Database</button>	
 {% csrf_token %}	
 <div class="container">
 
@@ -54,6 +56,7 @@ td,th {
 		<table class="table">
 			<tr>
 				<th style="text-align:left">Country (click for detail)</th>
+				<th>Population</th>
 				<th>Active</th>
 				<th>Critical
 				<th>Recovered</th>
@@ -69,6 +72,7 @@ td,th {
 
 		{% endif %}
 				<td style="text-align:left"><button class="cname" name="country_select" value="{{c.country}}">{{ c.country}}</button></td>
+				<td><button class="cname2" name="country_select" value="{{c.cdata.population}}">{{ c.cdata.population|intcomma }}</button></td>
 				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.active|intcomma }}</button></td>
 				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.critical|intcomma  }}</button></td>
 				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.recovered|intcomma  }}</button></td>
