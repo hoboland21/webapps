@@ -68,27 +68,27 @@ td,th {
 <div class="menubox" >
 	<h3 style="text-align:center">Current Covid-19 Statistics</h3>
 	<div class="flex-head-con">
-		
 		<div class="flex-cell" style="width:35%">
 			<button name="sortfield" value="country">Country</button>
 		</div>
 		<div class="flex-cell"  style="width:15%">
-			<button name="sortfield" value="country">Population</button>
+			<button name="sortfield" value="population">Population</button>
+		</div>
+
+		<div class="flex-cell"  style="width:10%">
+			<button name="sortfield" value="active">Active</button>
 		</div>
 		<div class="flex-cell"  style="width:10%">
-			<button name="sortfield" value="country">Active</button>
+			<button name="sortfield" value="critical">Critical</button>
 		</div>
 		<div class="flex-cell"  style="width:10%">
-			<button name="sortfield" value="country">Critical</button>
+			<button name="sortfield" value="recovered">Recovered</button>
 		</div>
 		<div class="flex-cell"  style="width:10%">
-			<button name="sortfield" value="country">Recovered</button>
+			<button name="sortfield" value="deaths">Deaths</button>
 		</div>
 		<div class="flex-cell"  style="width:10%">
-			<button name="sortfield" value="country">Deaths</button>
-		</div>
-		<div class="flex-cell"  style="width:10%">
-			<button name="sortfield" value="country">Totals</button>
+			<button name="sortfield" value="total">Totals</button>
 		</div>
 	</div>		
 
@@ -105,7 +105,7 @@ td,th {
 
 		{% endif %}
 				<td style="text-align:left"><button class="cname" name="country_select" value="{{c.country}}">{{ c.country}}</button></td>
-				<td><button class="cname2" name="country_select" value="{{c.cdata.population}}">{{ c.cdata.population|intcomma }}</button></td>
+				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cdata.population|intcomma }}</button></td>
 				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.active|intcomma }}</button></td>
 				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.critical|intcomma  }}</button></td>
 				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.recovered|intcomma  }}</button></td>

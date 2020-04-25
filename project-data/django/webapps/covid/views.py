@@ -27,6 +27,18 @@ def quick_check(country) :
 		cdata = Countries.objects.get(name=fix_dict[country])
 	return cdata
 
+
+
+def sortdata(data, sortfield) :
+	if sortfield in [ "total", "critical", "active", "recovered"] :
+		return sorted(data, key=lambda item: item["cases"][sortfield],reverse=True)
+	elif sortfield  ==  "deaths" :
+		return sorted(data, key=lambda item: item["deaths"]["total"],reverse=True)
+	else :
+		return sorted(data, key=lambda item: item["country"],reverse=False)
+6
+
+
 def dashboard(request) :
 	result = {}
 	test = CA()
@@ -45,19 +57,31 @@ def dashboard(request) :
 	data = test.current()["response"]
 	
 	result["current"] = data
-	result["sorted"] = []
 
-	for x in sorted(data, key=lambda item: item["cases"]["total"],reverse=True):
+
+
+	result["sorted"] = []
+	sortbin = []
+	sortfield = "total"
+	
+	if "sortfield" in request.POST :
+		sortfield = request.POST["sortfield"]
+
+	for x in sortdata(data,sortfield) :
 		
 		try:
 			x["cdata"] = Countries.objects.get(name=x["country"])
 		except:
 			x["cdata"] = quick_check(x["country"])
 
-		result["sorted"].append(x)
+		sortbin.append(x)
 
+
+	if sortfield == "population" :
+		result["sorted"] = sorted(sortbin, key=lambda sortbin: sortbin["cdata"].population,reverse=True)
+	else :
+		result["sorted"] = sortbin	
 	return  render(request,'dashboard.html',context=result)
-
 
 
 
