@@ -48,43 +48,47 @@ td,th {
   display:flex;
   flex-direction:row;
   align-items:align-center;
+  
+  background-image: linear-gradient(navajowhite,white);
 }
 
-
+ .flex-head-con button {
+   background-color: inherit;
+   border-style:none;
+   cursor:pointer;
+ }
 
 .flex-cell {
-  padding:1em;
+  padding:.5em;
   font-family:Copper;
-  font-size:9pt;
+  font-size:10pt;
   font-weight:bold;
 }
 </style>
 
 <form method="POST">
-
-<button name="load_country_db" value=1>Load Country Database</button>	
 {% csrf_token %}	
 <div class="container">
 <div class="menubox" >
 	<h3 style="text-align:center">Current Covid-19 Statistics</h3>
 	<div class="flex-head-con">
-		<div class="flex-cell" style="width:35%">
+		<div class="flex-cell" style="width:30%">
 			<button name="sortfield" value="country">Country</button>
 		</div>
 		<div class="flex-cell"  style="width:15%">
 			<button name="sortfield" value="population">Population</button>
 		</div>
 
-		<div class="flex-cell"  style="width:10%">
+		<div class="flex-cell"  style="width:12%">
 			<button name="sortfield" value="active">Active</button>
 		</div>
 		<div class="flex-cell"  style="width:10%">
 			<button name="sortfield" value="critical">Critical</button>
 		</div>
-		<div class="flex-cell"  style="width:10%">
+		<div class="flex-cell"  style="width:11%">
 			<button name="sortfield" value="recovered">Recovered</button>
 		</div>
-		<div class="flex-cell"  style="width:10%">
+		<div class="flex-cell"  style="width:11%">
 			<button name="sortfield" value="deaths">Deaths</button>
 		</div>
 		<div class="flex-cell"  style="width:10%">
@@ -97,22 +101,27 @@ td,th {
 		<table class="datamain">
 
 		{% for c in  sorted %}
-			{% if c.country != "World" and c.cdata.population|add:0 > 0 %}
-		{% if country == c.country %}
-			<tr class="marked_line">
-		{% else %}
-			<tr>
+			{% if c.country != "World" %}
+				{% if country == c.country %}
+					<tr class="marked_line">
+				{% else %}
+					<tr>
 
-		{% endif %}
-				<td style="text-align:left"><button class="cname" name="country_select" value="{{c.country}}">{{ c.country}}</button></td>
-				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cdata.population|intcomma }}</button></td>
-				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.active|intcomma }}</button></td>
-				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.critical|intcomma  }}</button></td>
-				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.recovered|intcomma  }}</button></td>
-				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.deaths.total|intcomma  }}</button></td>
-				<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.total|intcomma  }}</button></td>	
-			</tr>
+				{% endif %}
+					<td style="text-align:left"><button class="cname" name="country_select" value="{{c.country}}">{{ c.country}}</button></td>
 
+
+				{% if c.cdata.population|add:0 > 0  %}
+					<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cdata.population|intcomma }}</button></td>
+				{% else %}	
+					<td><button class="cname2" name="country_select" value="{{c.country}}"> -- </button></td>
+				{% endif %}
+					<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.active|intcomma }}</button></td>
+					<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.critical|intcomma  }}</button></td>
+					<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.recovered|intcomma  }}</button></td>
+					<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.deaths.total|intcomma  }}</button></td>
+					<td><button class="cname2" name="country_select" value="{{c.country}}">{{ c.cases.total|intcomma  }}</button></td>	
+				</tr>
 			{% endif %}
 		{% endfor %}
 		</table>
@@ -136,6 +145,9 @@ td,th {
 	{% endif %}
 
 </div>
+{% if sort_select %}
+	<input type="hidden" name="sort_select" value="{{ sort_select }}">
+{% endif %}
 </form>
 
 {% endblock %}	

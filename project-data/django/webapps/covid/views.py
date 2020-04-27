@@ -36,7 +36,7 @@ def sortdata(data, sortfield) :
 		return sorted(data, key=lambda item: item["deaths"]["total"],reverse=True)
 	else :
 		return sorted(data, key=lambda item: item["country"],reverse=False)
-6
+
 
 
 def dashboard(request) :
@@ -62,10 +62,16 @@ def dashboard(request) :
 
 	result["sorted"] = []
 	sortbin = []
-	sortfield = "total"
 	
 	if "sortfield" in request.POST :
 		sortfield = request.POST["sortfield"]
+		result["sort_select"] =  sortfield
+	elif "sort_select" in request.POST :
+		sortfield = request.POST["sort_select"]
+		result["sort_select"] =  sortfield
+	else :
+		sortfield = "total"
+
 
 	for x in sortdata(data,sortfield) :
 		
