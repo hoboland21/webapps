@@ -2,8 +2,18 @@ import http.client
 import json
 from datetime import datetime as dt
 from datetime import date
-from covid.models  import States
+from covid.models  import States, StateData
 import urllib.request
+
+
+def intcheck(val) :
+	try :
+		result = int(val)
+	except :
+		result = 0
+	return result
+
+
 
 class CovidStateApi(object) :
 	def __init__(self) :
@@ -15,6 +25,37 @@ class CovidStateApi(object) :
 		fp.close()
 		self.state = state
 		return self.to_chart()
+
+
+	def update_state_data(self) :
+		for s in self.states :
+			fp = urllib.request.urlopen("http://coronavirusapi.com/getTimeSeriesJson/{}".format(s.abbrev))
+			recs = json.loads(fp.read())
+			fp.close()
+			curr_recs = StateData.objects.filter(states=s)
+			for r in recs :
+				if not curr_recs.filter(timestamp=r["seconds_since_epoch"])  :
+					sd = StateData.objects.create(
+						states=s, 
+						timestamp=intcheck(r["seconds_since_epoch"]),
+						positive=intcheck(r["positive"]),
+						tested=intcheck(r["tested"]),
+						deaths=intcheck(r["deaths"]) )
+					sd.save()
+	
+	def latest_state_data(self,sortfield) :
+		result= []
+		
+		for state in self.states :
+			d = StateData.objects.filter(states=state).order_by("-timestamp")
+			lastrec = d[0]
+			lastrec.time = dt.fromtimestamp(lastrec.timestamp)
+			result.append(lastrec) 
+		if sortfield in ["death","positive","tested"] :
+			return  sorted(result, key=lambda result: getattr(result,sortfield),reverse=True)
+		else :
+			return result
+		
 
 
 	def date_prep(self,datestr) :

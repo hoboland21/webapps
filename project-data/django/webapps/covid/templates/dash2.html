@@ -12,7 +12,20 @@
 {% block body_main %}
 
 <style>
-				
+		
+
+ .flex-head-con {
+	  display:flex;
+	  flex-direction:row;
+	  align-items:align-center;
+	  background-image: linear-gradient(navajowhite,white);
+}
+
+ .flex-head-con button {
+   background-color: inherit;
+   border-style:none;
+   cursor:pointer;
+ }				
 .stdbutt {
 	background-color:snow;
 	color:#101010;
@@ -26,15 +39,45 @@
 }
 .hlbutt {
 	background-color:navajowhite;
-	color:#101010;
-	opacity:.5;
-	width:80%;
-	cursor:pointer;
-	border-style:none;
-	padding:5px;
-	font-family:Copper;
+
+
+}
+.scroll_div {
+	height:500px;
+	overflow-y: scroll;
+}
+.state_table {
+	width:100%;
+	
+}
+.state_table td {
+	text-align:right;
+	padding:.5em;
+}
+.state_table th {
 	text-align:left;
-	display:inline;
+	padding:.5em;
+}
+td,th {
+	font-family:Copper;
+	font-size:10pt;
+	text-align:right;
+}
+.datamain {
+	width:100%;
+}
+.cname {
+	border:none;
+	background-color:inherit;
+	cursor:pointer;
+	color:navy;
+
+}
+.cname2 {
+	border:none;
+	background-color:inherit;
+	cursor:pointer;
+	color:navy;
 
 }
 </style>
@@ -43,19 +86,54 @@
 {% csrf_token %}	
 <div class="container">
 	<div class="menubox">
-		<h3 style="text-align:center">Covid 19 United States Information</h3>
-		<div class="flex-con">
-		{% for s in states %}
-			<div style="width:16%;border:1px solid #ddd">
-				{% if s.abbrev == state %}
-					<button class="hlbutt" name="state_select" value="{{s.abbrev}}">{{s.name}} </button>
-				{% else %}
-					<button class="stdbutt" name="state_select" value="{{s.abbrev}}">{{s.name}} </button>
-				{% endif %}
-				<a href="{{s.url}}" target="_new"><img style="width:10%" src="/static/img/info.png"></a>
+		<div class="flex-head-con">
+			<div class="flex-cell" style="width:25%">
+				<button name="sortfield" value="state">State</button>
 			</div>
-		{% endfor %}
+			<div class="flex-cell"  style="width:10%">
+				<button name="sortfield" value="tested">Tested</button>
+			</div>
+			<div class="flex-cell"  style="width:10%">
+				<button name="sortfield" value="positive">Positive</button>
+			</div>
+			<div class="flex-cell"  style="width:10%">
+				<button name="sortfield" value="deaths">Deaths</button>
+			</div>
+     		<div class="flex-cell"  style="width:20%">
+				<button name="sortfield" value="date">Date</button>
+			</div>
+     		<div class="flex-cell"  style="width:15%">Info</div>
+	
+		</div>		
+		<div class="scroll_div">
+			<table class="state_table">
+				{% for l in latest  %}
+					
+						{% if l.states.abbrev == state %}
+							<tr class="hlbutt">
+						{% else %}
+							<tr>
+						{% endif %}
+
+					<td  style="width:25%;text-align:left">
+						<button class="cname2" name="state_select" value="{{ l.states.abbrev }}">{{ l.states.name }} ({{ l.states.abbrev }})  </button>
+					</td>
+					<td class="cname"  style="width:10%">{{ l.tested }}</td>
+					<td class="cname"  style="width:10%">{{ l.positive }}</td>
+					<td class="cname"  style="width:10%">{{ l.deaths }}</td>
+					<td class="cname"  style="width:25%">{{ l.time }}</td>
+					<td class="cname"  style="width:20%;text-align:center">
+						<a href="{{l.states.url}}" target="_new"><img style="width:20px" src="/static/img/info.png"></a>
+					</td>
+					</tr>
+				{% endfor %}
+			</table>
 		</div>
+	</div>
+
+	<div>
+		<button name="synch_data" value="1">Synch State Data Base</button>
+
 	</div>
 	<div class="menubox">
 		<div class="row">
@@ -70,5 +148,9 @@
 		</div>
 	</div>
 </div>
+{% if sort_select %}
+	<input type="hidden" name="sort_select" value="{{ sort_select }}">
+{% endif %}
 </form>
+
 {% endblock %}	

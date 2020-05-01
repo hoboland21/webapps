@@ -105,10 +105,15 @@ class ChartData(APIView):
 
 
 
+
+
 def dash2(request) :
 	result = {}
 
 	API= CAS()
+
+	if "synch_data" in request.POST:
+		API.update_state_data()
 
 	if "state_select" in request.POST:
 		state = request.POST["state_select"]
@@ -117,11 +122,26 @@ def dash2(request) :
 
 	result["state"] = state
 
-
 	data = API.state(state)
 	result["states"] = States.objects.all().order_by("abbrev")
 	result["current"] = data
 	result["chart"] = API.to_chart()
+
+
+	if "sortfield" in request.POST :
+		sortfield = request.POST["sortfield"]
+		result["sort_select"] =  sortfield
+	elif "sort_select" in request.POST :
+		sortfield = request.POST["sort_select"]
+		result["sort_select"] =  sortfield
+	else :
+		sortfield = "deaths"
+
+
+
+
+
+	result["latest"] = API.latest_state_data(sortfield)
 
 	return  render(request,'dash2.html',context=result)
 
