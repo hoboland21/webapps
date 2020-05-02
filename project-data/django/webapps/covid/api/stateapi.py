@@ -49,9 +49,9 @@ class CovidStateApi(object) :
 		for state in self.states :
 			d = StateData.objects.filter(states=state).order_by("-timestamp")
 			lastrec = d[0]
-			lastrec.time = dt.fromtimestamp(lastrec.timestamp)
+			lastrec.time = date.fromtimestamp(lastrec.timestamp).isoformat()
 			result.append(lastrec) 
-		if sortfield in ["death","positive","tested"] :
+		if sortfield in ["deaths","positive","tested"] :
 			return  sorted(result, key=lambda result: getattr(result,sortfield),reverse=True)
 		else :
 			return result
